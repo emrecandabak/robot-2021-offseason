@@ -28,7 +28,7 @@ public class Auto8Balls extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     super(new TurretPIDCommand(m_turret,true).withTimeout(1).alongWith(new SetShooterRPMPF(2900, m_shooter, true)).raceWith(new DropIntake(m_intake))
     , new FeedCG(m_shooter, m_feeder, m_intake, m_funnel).withTimeout(2).raceWith(new SetShooterRPMPF(2900, m_shooter, false))
-    , new DriveStraightMeters(m_drivetrain, -5.8, 0,1).raceWith(new ActivateIntakeCG(m_intake, m_feeder,0.7)).andThen(new DriveStraightMeters(m_drivetrain, 5.4, 0,5))
+    , new DriveStraightMeters(m_drivetrain, -4.4, 0,1).raceWith(new ActivateIntakeCG(m_intake, m_feeder,0.85)).andThen(new DriveStraightMeters(m_drivetrain, 4.4, 0,2))
     , new TurretPIDCommand(m_turret,true).withTimeout(1).alongWith(new SetShooterRPMPF(2900, m_shooter, true)),new FeedCG(m_shooter,m_feeder,m_intake,m_funnel).withTimeout(5).raceWith(new SetShooterRPMPF(2900, m_shooter, false)));
   }
     /*

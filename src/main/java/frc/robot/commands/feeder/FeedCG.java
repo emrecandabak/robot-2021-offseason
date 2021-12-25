@@ -36,11 +36,11 @@ public class FeedCG extends SequentialCommandGroup {
         m_funnel = funnel;
 
         addCommands(
-                new FeederCommand(m_feeder, -0.8, true)
-                        .raceWith(new RunIntake(m_intake, 0, true))
+                new FeederCommand(m_feeder, -0.8, true, false)
+                        .raceWith(new RunIntake(m_intake, 0, true, false))
                         .withTimeout(0.4),
-                new FeederCommand(m_feeder, -0.8, true)
-                        .alongWith(new RunIntake(m_intake, 0.7, true))
-                        .alongWith(new FunnelCommand(m_funnel, -0.5, -0.5, true)));
+                new FeederCommand(m_feeder, -0.8, true, false)
+                        .alongWith(new RunIntake(m_intake, 0.7, true, false))
+                        .alongWith(new FunnelCommand(m_funnel, -0.5, -0.5, true, false)));
     }
 }

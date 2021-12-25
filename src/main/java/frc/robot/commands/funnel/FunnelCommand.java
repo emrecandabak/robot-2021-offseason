@@ -16,11 +16,14 @@ public class FunnelCommand extends CommandBase {
     private final Double m__speed;
     private boolean m_toFeed;
     private boolean shooterAtSetpoint;
+    private boolean m_checkRPM;
 
-    public FunnelCommand(FunnelSubsystem funnel, double speed, double _speed, boolean toFeed) {
+    public FunnelCommand(
+            FunnelSubsystem funnel, double speed, double _speed, boolean toFeed, boolean checkRPM) {
         this.m_speed = speed;
         this.m_funnel = funnel;
         this.m__speed = _speed;
+        m_checkRPM = checkRPM;
         m_toFeed = toFeed;
         addRequirements(m_funnel);
     }
@@ -35,7 +38,7 @@ public class FunnelCommand extends CommandBase {
     @Override
     public void execute() {
         shooterAtSetpoint = Robot.m_robotContainer.m_shooter.isAtSetpoint;
-        if (m_toFeed) {
+        if (m_toFeed && m_checkRPM) {
             if (shooterAtSetpoint) {
                 m_funnel.runFunnel(m_speed, m__speed);
             } else {

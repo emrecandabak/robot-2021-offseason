@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpiutil.net.PortForwarder;
 
 /**
 * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,7 +28,8 @@ public class Robot extends TimedRobot {
     public static NetworkTableEntry angle;
     public static NetworkTableEntry validAngle;
     public static NetworkTableInstance inst;
-    NetworkTable table = photon.getTable("photonvision").getSubTable("microsoftlifecam");
+
+    NetworkTable table = photon.getTable("photonvision").getSubTable("picam");
     private Command m_autonomousCommand;
     public static RobotContainer m_robotContainer;
     public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
@@ -45,10 +47,10 @@ public class Robot extends TimedRobot {
         // and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
-
         photon.startClient("10.72.85.12");
         angle = table.getEntry("targetYaw");
         validAngle = table.getEntry("hasTarget");
+        PortForwarder.add(5800, "10.72.85.12", 5800);
 
         autoChooser.setDefaultOption("8 Balls Right Side", 0);
         autoChooser.addOption("3 Balls", 1);
@@ -89,6 +91,7 @@ public class Robot extends TimedRobot {
 
         m_robotContainer.m_robotDrive.resetEncoders();
         m_robotContainer.m_robotDrive.zeroHeading();
+        m_robotContainer.m_intake.openCompressor();
 
         if (autoChooser.getSelected() == 0) {
             m_robotContainer.m_robotDrive.m_odometry.resetPosition(

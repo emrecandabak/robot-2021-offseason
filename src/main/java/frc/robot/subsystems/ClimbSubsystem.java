@@ -36,10 +36,10 @@ public class ClimbSubsystem extends SubsystemBase {
     }
 
     public void lockClimber() {
-        climbLock.set(Value.kForward);
+        climbLock.set(Value.kReverse);
     }
 
     public void releaseClimber() {
-        climbLock.set(Value.kReverse);
+        climbLock.set(Value.kForward);
     }
 }

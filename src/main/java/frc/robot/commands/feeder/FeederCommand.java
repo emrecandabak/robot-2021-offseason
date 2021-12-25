@@ -12,15 +12,18 @@ public class FeederCommand extends CommandBase {
     /** Creates a new AccelaratorCommand. */
     private final FeederSubsystem m_accelarator;
 
+    private boolean m_checkRPM;
     private final double m_speed;
     private boolean m_toFeed;
     private boolean shooterAtSetpoint;
 
-    public FeederCommand(FeederSubsystem accelarator, double speed, boolean toFeed) {
+    public FeederCommand(
+            FeederSubsystem accelarator, double speed, boolean toFeed, boolean checkRPM) {
         // Use addRequirements() here to declare subsystem dependencies.
         m_accelarator = accelarator;
         m_speed = speed;
         m_toFeed = toFeed;
+        m_checkRPM = checkRPM;
         addRequirements(m_accelarator);
     }
 
@@ -34,7 +37,7 @@ public class FeederCommand extends CommandBase {
     @Override
     public void execute() {
         shooterAtSetpoint = Robot.m_robotContainer.m_shooter.isAtSetpoint;
-        if (m_toFeed) {
+        if (m_toFeed && m_checkRPM) {
             if (shooterAtSetpoint && Robot.m_robotContainer.m_turret.isAtSetpoint) {
                 m_accelarator.runFeeder(m_speed);
             } else {

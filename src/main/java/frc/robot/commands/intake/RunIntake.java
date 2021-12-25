@@ -11,12 +11,14 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class RunIntake extends CommandBase {
     private final double m_speed;
     private final IntakeSubsystem m_intake;
+    private boolean m_checkRPM;
     private boolean m_toFeed;
     private boolean shooterAtSetpoint;
 
-    public RunIntake(IntakeSubsystem intake, double speed, boolean toFeed) {
+    public RunIntake(IntakeSubsystem intake, double speed, boolean toFeed, boolean checkRPM) {
         this.m_speed = speed;
         this.m_intake = intake;
+        m_checkRPM = checkRPM;
         m_toFeed = toFeed;
         addRequirements(m_intake);
     }
@@ -31,7 +33,7 @@ public class RunIntake extends CommandBase {
     @Override
     public void execute() {
         shooterAtSetpoint = Robot.m_robotContainer.m_shooter.isAtSetpoint;
-        if (m_toFeed) {
+        if (m_toFeed && m_checkRPM) {
             if (shooterAtSetpoint && Robot.m_robotContainer.m_turret.isAtSetpoint) {
                 m_intake.runIntake(m_speed);
             } else {

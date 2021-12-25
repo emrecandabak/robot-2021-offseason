@@ -30,6 +30,7 @@ public class Auto7BallSteal extends SequentialCommandGroup {
             TurretSubsystem turret) {
         // Add your commands in the addCommands() call, e.g.
         // addCommands(new FooCommand(), new BarCommand());
+        /*
         super(
                 s_trajectory
                         .getRamsete(s_trajectory.steal7Balls[0])
@@ -45,5 +46,23 @@ public class Auto7BallSteal extends SequentialCommandGroup {
                         .getRamsete(s_trajectory.steal7Balls[3])
                         .andThen(() -> drive.tankDriveVolts(0, 0)),
                 new ShootCG(shooter, turret, feeder, funnel, intake));
+    }
+    */
+    super(
+                s_trajectory
+                        .getRamsete(s_trajectory.steal7Balls[0])
+                        ,
+                s_trajectory
+                        .getRamsete(s_trajectory.steal7Balls[1])
+                        ,
+
+                s_trajectory
+                        .getRamsete(s_trajectory.steal7Balls[2])
+                        ,
+                s_trajectory
+                        .getRamsete(s_trajectory.steal7Balls[3])
+                        .andThen(() -> drive.tankDriveVolts(0, 0)))
+                        ;
+
     }
 }

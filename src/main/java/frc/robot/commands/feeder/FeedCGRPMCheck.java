@@ -2,51 +2,45 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Robot;
-import frc.robot.RobotState;
-import frc.robot.commands.feeder.FeedCGRPMCheck;
-import frc.robot.commands.turret.TurretPIDCommand;
+import frc.robot.commands.funnel.FunnelCommand;
+import frc.robot.commands.intake.RunIntake;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.FunnelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShootCG extends SequentialCommandGroup {
+public class FeedCGRPMCheck extends SequentialCommandGroup {
+    /** Creates a new FeedCGRPMCheck. */
     private ShooterSubsystem m_shooter;
-    private TurretSubsystem m_turret;
+
     private FeederSubsystem m_feeder;
     private IntakeSubsystem m_intake;
     private FunnelSubsystem m_funnel;
 
-    // Use with "whileHeld" !!
-
-    /** Creates a new ShootCG. */
-    public ShootCG(
+    public FeedCGRPMCheck(
             ShooterSubsystem shooter,
-            TurretSubsystem turret,
             FeederSubsystem feeder,
-            FunnelSubsystem funnel,
-            IntakeSubsystem intake) {
-        Robot.robotState = RobotState.SHOOT;
-
-        m_shooter = shooter;
-        m_turret = turret;
-        m_feeder = feeder;
-        m_intake = intake;
-        m_funnel = funnel;
+            IntakeSubsystem intake,
+            FunnelSubsystem funnel) {
         // Add your commands in the addCommands() call, e.g.
         // addCommands(new FooCommand(), new BarCommand());
+        m_intake = intake;
+        m_feeder = feeder;
+        m_shooter = shooter;
+        m_funnel = funnel;
+
         addCommands(
-                new TurretPIDCommand(m_turret, false)
-                        .alongWith(
-                                new SetShooterRPMPF(2900, shooter, false)
-                                        .alongWith(new FeedCGRPMCheck(m_shooter, m_feeder, m_intake, m_funnel))));
+                new FeederCommand(m_feeder, -0.8, true, true)
+                        .raceWith(new RunIntake(m_intake, 0, true, true))
+                        .withTimeout(0.4),
+                new FeederCommand(m_feeder, -0.8, true, true)
+                        .alongWith(new RunIntake(m_intake, 0.7, true, true))
+                        .alongWith(new FunnelCommand(m_funnel, -0.5, -0.5, true, true)));
     }
 }

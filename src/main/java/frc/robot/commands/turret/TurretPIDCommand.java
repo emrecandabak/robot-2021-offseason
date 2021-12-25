@@ -86,9 +86,9 @@ public class TurretPIDCommand extends CommandBase {
             output = 0;
         }
         if (0 < output && 2 > output) {
-            output += 0.75;
+            output += 0.8;
         } else if (0 > output && -2 < output) {
-            output -= 0.75;
+            output -= 0.8;
         }
         System.out.println("Output : " + output);
         m_turret.setTurretVolts(output);

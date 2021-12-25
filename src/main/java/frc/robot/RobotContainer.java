@@ -16,11 +16,11 @@ import frc.robot.commands.climb.ReleaseClimber;
 import frc.robot.commands.climb.RunClimber;
 import frc.robot.commands.drivetrain.JoystickDriveCommand;
 import frc.robot.commands.feeder.FeedCG;
+import frc.robot.commands.feeder.FeederReverse;
 import frc.robot.commands.intake.ActivateIntakeCG;
 import frc.robot.commands.intake.ToggleCompressor;
 import frc.robot.commands.shooter.SetShooterRPMPF;
 import frc.robot.commands.shooter.ShootCG;
-import frc.robot.commands.turret.TurretInterruptor;
 import frc.robot.commands.turret.TurretJoystickCommand;
 import frc.robot.commands.turret.TurretPIDCommand;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -64,7 +64,7 @@ public class RobotContainer {
                 .whileHeld(new ShootCG(m_shooter, m_turret, m_Feeder, m_funnel, m_intake));
         // Turret Commands
         new JoystickButton(m_driverController, 3).whileHeld(new TurretPIDCommand(m_turret, false));
-        new JoystickButton(m_driverController, 2).whileHeld(new TurretInterruptor(m_turret));
+        new JoystickButton(m_driverController, 2).whileHeld(new FeederReverse(m_Feeder, m_shooter));
 
         new JoystickButton(m_operatorController, 9).whileHeld(new TurretJoystickCommand(m_turret, 0.3));
         new JoystickButton(m_operatorController, 10)
